@@ -4,7 +4,7 @@ import "./MovieList.css";
 
 interface MovieListProps {
   movies: MovieModel[];
-  //   onSelectMovie: (movie: MovieModel) => void;
+  onSelectMovie: (movie: MovieModel) => void;
 }
 
 function MovieList(props: MovieListProps) {
@@ -12,7 +12,7 @@ function MovieList(props: MovieListProps) {
     <ul className="MovieList list list-movies">
       {props.movies?.map((movie) => (
         <Movie
-          //   onSelectMovie={props.onSelectMovie}
+          onSelectMovie={props.onSelectMovie}
           key={movie.imdbID}
           movie={movie}
         />
