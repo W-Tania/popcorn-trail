@@ -9,6 +9,7 @@ import WatchedModel from "../../../models/WatchedModel";
 import SelectedMovieModel from "../../../models/SelectedMovieModel";
 import StarRating from "../../Ui/StarRating";
 import moviesService from "../../../services/MoviesService";
+import useKeyDownListener from "../../../hooks/useKeyDownListener";
 
 interface SelectedMovieProps {
   selectedId: string;
@@ -17,7 +18,7 @@ interface SelectedMovieProps {
   onAddWatched: (movie: WatchedModel) => void;
 }
 
-function SelectedMovie(props: SelectedMovieProps): JSX.Element {
+function SelectedMovie(props: SelectedMovieProps) {
   const [movie, setMovie] = useState<SelectedMovieModel>(
     new SelectedMovieModel()
   );
@@ -45,26 +46,18 @@ function SelectedMovie(props: SelectedMovieProps): JSX.Element {
       });
   }, [props.selectedId]);
 
-  useEffect(() => {
-    function callback(e: KeyboardEvent): void {
-      if (e.code === "Escape") {
-        props.onCloseMovie();
-      }
-    }
+  useKeyDownListener({
+    action: props.onCloseMovie,
+    keys: ["Escape"],
+  });
 
-    document.addEventListener("keydown", callback);
-
-    return () => {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [props, props.onCloseMovie]);
-
+  //Change web title when movie selected
   useEffect(() => {
     if (!movie.Title) return;
     document.title = `Movie | ${movie.Title}`;
 
     return () => {
-      document.title = "usePopcorn";
+      document.title = "Popcorn Trail";
     };
   }, [movie]);
 
